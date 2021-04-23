@@ -23,7 +23,6 @@ import com.example.notemanagement.ui.category.CategoryFragment;
 public class CategoryDialog extends DialogFragment {
     private  static final String TAG = "CategoryDialog";
 
-    TextView header;
     EditText categoryName;
     Custom_DialogInterFace dialogInterface;
     Button actionAdd, actionClose;
@@ -36,7 +35,6 @@ public class CategoryDialog extends DialogFragment {
         actionClose = root.findViewById(R.id.btClose);
         actionAdd = root.findViewById(R.id.btAdd);
         categoryName = root.findViewById(R.id.edtCategoryName);
-        header = root.findViewById(R.id.tvHeader);
 
         actionClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,12 +65,12 @@ public class CategoryDialog extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
+        //dialogInterface = (Custom_DialogInterFace) context;
         try {
-            dialogInterface = (Custom_DialogInterFace) getTargetFragment();
+            dialogInterface = (Custom_DialogInterFace) context;
         }catch (ClassCastException e){
             Log.e(TAG, "onAttach: ClassCastException : " + e.getMessage());
         }
-
     }
 
     public interface Custom_DialogInterFace{

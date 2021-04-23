@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -58,8 +59,9 @@ public class CategoryFragment extends Fragment implements CategoryDialog.Custom_
                 //Toast.makeText(getContext(), "Add successfully", Toast.LENGTH_LONG).show();
                 Log.d(TAG, "onClick: opening dialog");
 
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 CategoryDialog categoryDialog = new CategoryDialog();
-                categoryDialog.show(getActivity().getSupportFragmentManager(), "CategoryDialog");
+                categoryDialog.show(ft, "CategoryDialog");
             }
         });
 
@@ -70,6 +72,8 @@ public class CategoryFragment extends Fragment implements CategoryDialog.Custom_
         recyclerView = root.findViewById(R.id.rvCategory);
         listCategory = CategoryDatabase.getInstance(getContext()).categoryDAO().getListCategory();
         categoryAdapter = new CategoryAdapter(getContext(), listCategory);
+
+        categoryAdapter.setData(listCategory);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -84,8 +88,9 @@ public class CategoryFragment extends Fragment implements CategoryDialog.Custom_
 
         CategoryDatabase.getInstance(getContext()).categoryDAO().insertCategory(category);
 
-        listCategory = CategoryDatabase.getInstance(getContext()).categoryDAO().getListCategory();
+        //Toast.makeText(getActivity(), "Add Category successfully!", Toast.LENGTH_SHORT).show();
 
+        listCategory =  CategoryDatabase.getInstance(getContext()).categoryDAO().getListCategory();
         categoryAdapter.setData(listCategory);
     }
 }
