@@ -1,12 +1,15 @@
 package com.example.notemanagement.adapter;
 
 import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notemanagement.R;
@@ -28,14 +31,24 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         notifyDataSetChanged();
     }
 
-    class  ViewHolder extends RecyclerView.ViewHolder{
+    class  ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
         TextView name, createDate;
+        ConstraintLayout itemCategory;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // Ánh xạ view
             name = itemView.findViewById(R.id.tvName);
             createDate = itemView.findViewById(R.id.tvDateCreate);
+
+            itemCategory = itemView.findViewById(R.id.item_row);
+            itemCategory.setOnCreateContextMenuListener(this);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.add(this.getAdapterPosition(),0,0,"Edit");
+            menu.add(this.getAdapterPosition(),1,1,"Delete");
         }
     }
 
