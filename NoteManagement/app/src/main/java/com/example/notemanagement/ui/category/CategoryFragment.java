@@ -65,6 +65,9 @@ public class CategoryFragment extends Fragment implements CategoryDialog.Custom_
             }
         });
 
+        //listCategory =  CategoryDatabase.getInstance(getContext()).categoryDAO().getListCategory();
+        //categoryAdapter.setData(listCategory);
+
         return root;
     }
 
