@@ -55,7 +55,7 @@ public class CategoryFragment extends Fragment {
         btnOpen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OpenCategoryDialog(true);
+                OpenCategoryDialog(true, -1);
             }
         });
 
@@ -77,7 +77,7 @@ public class CategoryFragment extends Fragment {
         recyclerView.setAdapter(categoryAdapter);
     }
 
-    public void OpenCategoryDialog(boolean isAddNew){
+    public void OpenCategoryDialog(boolean isAddNew,@Nullable int position){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         View view = getLayoutInflater().inflate(R.layout.dialog_category, null);
         AlertDialog alertDialog = builder.create();
@@ -115,7 +115,10 @@ public class CategoryFragment extends Fragment {
                 }
                 else
                 {
-                    UpdateCategory(new Category(categoryName, date));
+                    Category category = listCategory.get(position);
+                    category.setName(categoryName);
+                    category.setCreateDate(date);
+                    UpdateCategory(category);
                 }
 
                 alertDialog.cancel();
@@ -128,7 +131,7 @@ public class CategoryFragment extends Fragment {
         int position = item.getGroupId();
         switch (item.getItemId()){
             case 0:
-                OpenCategoryDialog(false);
+                OpenCategoryDialog(false, position);
                 return true;
             case 1:
                 return DeleteCategory(position);
