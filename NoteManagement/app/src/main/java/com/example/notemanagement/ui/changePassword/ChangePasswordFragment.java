@@ -26,13 +26,13 @@ public class ChangePasswordFragment extends Fragment {
         changePasswordViewModel =
                 new ViewModelProvider(this).get(ChangePasswordViewModel.class);
         View root = inflater.inflate(R.layout.fragment_change_password, container, false);
-        final TextView textView = root.findViewById(R.id.text_changePassword);
+        /*final TextView textView = root.findViewById(R.id.text_changePassword);
         changePasswordViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
-        });
+        });*/
         return root;
     }
 }

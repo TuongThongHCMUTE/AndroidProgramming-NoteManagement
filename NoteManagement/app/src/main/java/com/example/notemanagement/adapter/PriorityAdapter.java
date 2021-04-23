@@ -12,27 +12,27 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notemanagement.R;
-import com.example.notemanagement.entity.Category;
+import com.example.notemanagement.entity.Priority;
 
 import java.util.List;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
+public class PriorityAdapter extends RecyclerView.Adapter<PriorityAdapter.ViewHolder> {
     Context context;
-    List<Category> listCategory;
+    List<Priority> listPriority;
 
-    public CategoryAdapter(Context context, List<Category> listCategory) {
+    public PriorityAdapter(Context context, List<Priority> listPriority) {
         this.context = context;
-        this.listCategory = listCategory;
+        this.listPriority = listPriority;
     }
 
-    public void setData(List<Category> list){
-        this.listCategory = list;
+    public void setData(List<Priority> list){
+        this.listPriority = list;
         notifyDataSetChanged();
     }
 
     class  ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
         TextView name, createDate;
-        ConstraintLayout itemCategory;
+        ConstraintLayout itemPriority;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -40,8 +40,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             name = itemView.findViewById(R.id.tvName);
             createDate = itemView.findViewById(R.id.tvDateCreate);
 
-            itemCategory = itemView.findViewById(R.id.item_row);
-            itemCategory.setOnCreateContextMenuListener(this);
+            itemPriority = itemView.findViewById(R.id.item_row);
+            itemPriority.setOnCreateContextMenuListener(this);
         }
 
         @Override
@@ -53,21 +53,21 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @NonNull
     @Override
-    public CategoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PriorityAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_view, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CategoryAdapter.ViewHolder holder, int position) {
-        Category category = listCategory.get(position);
+    public void onBindViewHolder(@NonNull PriorityAdapter.ViewHolder holder, int position) {
+        Priority priority = listPriority.get(position);
 
-        holder.name.setText(category.getName());
-        holder.createDate.setText(category.getCreateDate().toString());
+        holder.name.setText(priority.getName());
+        holder.createDate.setText(priority.getCreateDate().toString());
     }
 
     @Override
     public int getItemCount() {
-        return listCategory.size();
+        return listPriority.size();
     }
 }
