@@ -23,6 +23,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         this.listCategory = listCategory;
     }
 
+    public void setData(List<Category> list){
+        this.listCategory = list;
+        notifyDataSetChanged();
+    }
+
     class  ViewHolder extends RecyclerView.ViewHolder{
         TextView name, createDate;
 
