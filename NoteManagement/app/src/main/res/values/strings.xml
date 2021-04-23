@@ -14,4 +14,9 @@
     <string name="menu_note">Note</string>
     <string name="menu_editProfile">Edit Profile</string>
     <string name="menu_changePassword">Change Password</string>
+    <string name="enter_your_last_name">Enter your last name</string>
+    <string name="enter_your_first_name">Enter your first name</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="enter_your_email">Enter Your Email</string>
+    <string name="change">Change</string>
 </resources>
