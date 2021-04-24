@@ -6,7 +6,6 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import com.example.notemanagement.entity.User;
-import com.example.notemanagement.entity.UserEntity;
 
 import static androidx.room.OnConflictStrategy.REPLACE;
 
@@ -16,11 +15,11 @@ public interface UserDao {
     @Insert(onConflict = REPLACE)
     void registerUser(User user);
 
-    @Query("SELECT * FROM user WHERE email = (:email) AND password = (:password)")
-    UserEntity login(String email, String password);
+    @Query("SELECT * FROM User WHERE email = (:email) AND password = (:password)")
+    User login(String email, String password);
 
     @Query("SELECT * FROM user WHERE email = (:emailCheck)")
-    UserEntity checkExistence(String emailCheck);
+    User checkExistence(String emailCheck);
 
     @Query("UPDATE user SET firstname = :firstname, lastname=:lastname, email=:email where userID = :uID")
     public void updateProfile(String firstname, String lastname, String email, int uID);

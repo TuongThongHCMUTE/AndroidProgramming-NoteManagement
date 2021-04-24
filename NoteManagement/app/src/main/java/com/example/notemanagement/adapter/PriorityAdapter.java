@@ -63,7 +63,7 @@ public class PriorityAdapter extends RecyclerView.Adapter<PriorityAdapter.ViewHo
         Priority priority = listPriority.get(position);
 
         holder.name.setText("Name: " + priority.getName());
-        holder.createDate.setText("Create date: " + priority.getCreateDate().toString());
+        holder.createDate.setText("Create date: " + priority.getCreateDate());
     }
 
     @Override

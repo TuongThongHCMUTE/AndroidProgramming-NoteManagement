@@ -8,14 +8,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.notemanagement.dao.UserDao;
 import com.example.notemanagement.database.UserDatabase;
-import com.example.notemanagement.entity.UserEntity;
+import com.example.notemanagement.entity.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class SignInActivity extends AppCompatActivity {
@@ -39,18 +38,7 @@ public class SignInActivity extends AppCompatActivity {
 
         SharedPreferences preferences = getSharedPreferences("checkBox", MODE_PRIVATE);
         String rememberMe = preferences.getString("checkBox", "");
-        // the part below is the "remember me"
-        // un-comment to use
-//        if (rememberMe.equals("true")) {
-//            Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
-//            startActivity(intent);
-//        }
-//        else  if (rememberMe.equals("false")) {
-//            Toast.makeText(SignInActivity.this, "Please Sign In", Toast.LENGTH_SHORT).show();
-//        }
 
-        // Check whereas the checkBox is checked or not
-        // if "Check" show message "checked",...
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -80,7 +68,6 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-
         //floating button to open the sign up page
         floatingbtnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +82,7 @@ public class SignInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 emailLogin = email.getText().toString();
                 passLogin = password.getText().toString();
+
                 if (emailLogin.isEmpty() || passLogin.isEmpty()) {
                     Toast.makeText(SignInActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
                 }
@@ -105,8 +93,8 @@ public class SignInActivity extends AppCompatActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            UserEntity userEntity = userDao.login(emailLogin, passLogin);
-                            if (userEntity == null) {
+                            User user = userDao.login(emailLogin, passLogin);
+                            if (user == null) {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -119,9 +107,7 @@ public class SignInActivity extends AppCompatActivity {
                             }
                         }
                     }).start();
-
                 }
-
             }
         });
     }

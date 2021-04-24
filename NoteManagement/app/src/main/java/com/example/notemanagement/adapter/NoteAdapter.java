@@ -32,17 +32,16 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     }
 
     class  ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
-        TextView name, planDate, createDate;
-        Spinner category, priority, status;
+        TextView name, planDate, createDate, category, priority, status;
         ConstraintLayout itemNote;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // Ánh xạ view
             name = itemView.findViewById(R.id.tvName);
-            category = itemView.findViewById(R.id.spCategory);
-            priority = itemView.findViewById(R.id.spPriority);
-            status = itemView.findViewById(R.id.spnStatus);
+            category = itemView.findViewById(R.id.tvCategory);
+            priority = itemView.findViewById(R.id.tvPriority);
+            status = itemView.findViewById(R.id.tvStatus);
             planDate = itemView.findViewById(R.id.tvPlanDate);
             createDate = itemView.findViewById(R.id.tvDateCreate);
 
@@ -68,8 +67,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull NoteAdapter.ViewHolder holder, int position) {
         Note note = listNote.get(position);
 
-        holder.name.setText(note.getName());
-        holder.createDate.setText(note.getCreateDate().toString());
+        holder.name.setText("Name: " + note.getName());
+        holder.category.setText("Category: " + note.getCategory());
+        holder.priority.setText("Priority: " + note.getPriority());
+        holder.status.setText("Status: " + note.getStatus());
+        holder.planDate.setText("Plan date: " + note.getPlanDate());
+        holder.createDate.setText("Create date: " + note.getCreateDate());
     }
 
     @Override

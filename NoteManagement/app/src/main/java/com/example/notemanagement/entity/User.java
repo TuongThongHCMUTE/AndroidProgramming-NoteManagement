@@ -3,7 +3,7 @@ package com.example.notemanagement.entity;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "user")
+@Entity(tableName = "User")
 public class User {
     @PrimaryKey(autoGenerate = true)
     private int userID;
@@ -20,12 +20,12 @@ public class User {
         this.lastname = lastname;
     }
 
-    public Integer getId() {
+    public int getUserID() {
         return userID;
     }
 
-    public void setId(Integer id) {
-        this.userID = id;
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public String getEmail() {
@@ -59,7 +59,4 @@ public class User {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
-
-
-
 }

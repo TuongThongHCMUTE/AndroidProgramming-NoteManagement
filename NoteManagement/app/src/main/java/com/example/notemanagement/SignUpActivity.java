@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.notemanagement.dao.UserDao;
 import com.example.notemanagement.database.UserDatabase;
 import com.example.notemanagement.entity.User;
-import com.example.notemanagement.entity.UserEntity;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -83,8 +82,8 @@ public class SignUpActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                UserEntity userEntity1 = userDao1.checkExistence(emailCheck);
-                if (userEntity1 != null) {
+                User userEntity = userDao1.checkExistence(emailCheck);
+                if (userEntity != null) {
                     return ;
                 }
             }
