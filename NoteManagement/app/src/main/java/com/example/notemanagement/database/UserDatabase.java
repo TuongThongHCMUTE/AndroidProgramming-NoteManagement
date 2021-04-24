@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase;
 import com.example.notemanagement.dao.UserDao;
 import com.example.notemanagement.entity.UserEntity;
 
-@Database(entities = {UserEntity.class}, version = 1)
+@Database(entities = {UserEntity.class}, version = 2)
 public abstract class UserDatabase extends RoomDatabase {
 
     private  static final String dbName = "user";
