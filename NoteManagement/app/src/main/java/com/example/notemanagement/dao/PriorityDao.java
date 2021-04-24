@@ -26,4 +26,7 @@ public interface PriorityDao {
 
     @Query("Select name From Priority")
     String[] getPriorityName();
+
+    @Query("Select id From Priority")
+    int[] getPriorityId();
 }

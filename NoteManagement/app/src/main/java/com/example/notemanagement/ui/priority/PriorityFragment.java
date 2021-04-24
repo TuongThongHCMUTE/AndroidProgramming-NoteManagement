@@ -103,9 +103,9 @@ public class PriorityFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 EditText edtPriorityName = view.findViewById(R.id.edtPriorityName);
-                String priorityName = "Name: " + edtPriorityName.getText().toString();
+                String priorityName = edtPriorityName.getText().toString();
 
-                String date = "Create Date: " + android.text.format.DateFormat.format("yyyy-MM-dd hh:mm:ss", new java.util.Date());
+                String date = android.text.format.DateFormat.format("yyyy-MM-dd hh:mm:ss", new java.util.Date()).toString();
 
                 if(isAddNew == true){
                     AddPriority(new Priority(priorityName, date));

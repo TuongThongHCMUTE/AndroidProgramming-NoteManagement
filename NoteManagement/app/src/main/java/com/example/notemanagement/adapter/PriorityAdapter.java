@@ -62,8 +62,8 @@ public class PriorityAdapter extends RecyclerView.Adapter<PriorityAdapter.ViewHo
     public void onBindViewHolder(@NonNull PriorityAdapter.ViewHolder holder, int position) {
         Priority priority = listPriority.get(position);
 
-        holder.name.setText(priority.getName());
-        holder.createDate.setText(priority.getCreateDate().toString());
+        holder.name.setText("Name: " + priority.getName());
+        holder.createDate.setText("Create date: " + priority.getCreateDate().toString());
     }
 
     @Override

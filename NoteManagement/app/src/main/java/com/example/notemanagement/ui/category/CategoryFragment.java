@@ -105,9 +105,9 @@ public class CategoryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 EditText edtCategoryName = view.findViewById(R.id.edtCategoryName);
-                String categoryName = "Name: " + edtCategoryName.getText().toString();
+                String categoryName = edtCategoryName.getText().toString();
 
-                String date = "Create Date: " + android.text.format.DateFormat.format("yyyy-MM-dd hh:mm:ss", new java.util.Date());
+                String date = android.text.format.DateFormat.format("yyyy-MM-dd hh:mm:ss", new java.util.Date()).toString();
 
 
 

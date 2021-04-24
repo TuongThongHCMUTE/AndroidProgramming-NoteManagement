@@ -26,4 +26,7 @@ public interface StatusDao {
 
     @Query("Select name From Status")
     String[] getStatusName();
+
+    @Query("Select id From Status")
+    int[] getStatusId();
 }

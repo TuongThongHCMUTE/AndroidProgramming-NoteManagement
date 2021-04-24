@@ -62,8 +62,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onBindViewHolder(@NonNull CategoryAdapter.ViewHolder holder, int position) {
         Category category = listCategory.get(position);
 
-        holder.name.setText(category.getName());
-        holder.createDate.setText(category.getCreateDate().toString());
+        holder.name.setText("Name: " + category.getName());
+        holder.createDate.setText("Create date: " + category.getCreateDate().toString());
     }
 
     @Override

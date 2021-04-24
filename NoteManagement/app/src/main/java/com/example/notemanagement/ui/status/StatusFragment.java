@@ -103,9 +103,9 @@ public class StatusFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 EditText edtStatusName = view.findViewById(R.id.edtStatusName);
-                String statusName = "Name: " + edtStatusName.getText().toString();
+                String statusName = edtStatusName.getText().toString();
 
-                String date = "Create Date: " + android.text.format.DateFormat.format("yyyy-MM-dd hh:mm:ss", new java.util.Date());
+                String date = android.text.format.DateFormat.format("yyyy-MM-dd hh:mm:ss", new java.util.Date()).toString();
 
                 if(isAddNew == true){
                     AddStatus(new Status(statusName, date));

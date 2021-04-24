@@ -26,4 +26,7 @@ public interface CategoryDao {
 
     @Query("Select name From Category")
     String[] getCategoryName();
+
+    @Query("Select id From Category")
+    int[] getCategoryId();
 }

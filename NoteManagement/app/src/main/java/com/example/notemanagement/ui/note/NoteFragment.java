@@ -49,6 +49,7 @@ public class NoteFragment extends Fragment {
     FloatingActionButton btnOpen;
     Button btAdd, btClose, btSetPlanDate;
     TextView tvPlanDate;
+    Spinner spCategory, spPriority, spStatus;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -94,55 +95,15 @@ public class NoteFragment extends Fragment {
         alertDialog.setView(view);
         alertDialog.show();
 
-        tvPlanDate = view.findViewById(R.id.tvPlanDate);
-
-        //Category
-        Spinner spCategory = (Spinner) view.findViewById(R.id.spCategory);
-        String[] initCategory = {"Select category..."};
-
-        String[] listCategoryName = CategoryDatabase.getInstance(getContext()).categoryDAO().getCategoryName();
-
-        List listCat = new ArrayList(Arrays.asList(initCategory));
-        listCat.addAll(Arrays.asList(listCategoryName));
-        Object[] objectCat = listCat.toArray();
-
-        ArrayAdapter adapterCat = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item, objectCat);
-        adapterCat.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCategory.setAdapter(adapterCat);
-
-        //Priority
-        Spinner spPriority = (Spinner) view.findViewById(R.id.spPriority);
-        String[] initPriority = {"Select priority..."};
-
-        String[] listPriorityName = PriorityDatabase.getInstance(getContext()).PriorityDAO().getPriorityName();
-
-        List listPri = new ArrayList(Arrays.asList(initPriority));
-        listPri.addAll(Arrays.asList(listPriorityName));
-        Object[] objectPri = listPri.toArray();
-
-        ArrayAdapter adapterPri = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item, objectPri);
-        adapterPri.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spPriority.setAdapter(adapterPri);
-
-        //Status
-        Spinner spStatus = (Spinner) view.findViewById(R.id.spnStatus);
-        String[] initStatus = {"Select status..."};
-
-        String[] listStatusName = StatusDatabase.getInstance(getContext()).StatusDAO().getStatusName();
-
-        List listStatus = new ArrayList(Arrays.asList(initStatus));
-        listStatus.addAll(Arrays.asList(listStatusName));
-        Object[] objectStatus = listStatus.toArray();
-
-        ArrayAdapter adapterStatus= new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item, objectStatus);
-        adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spStatus.setAdapter(adapterStatus);
+        ChooseCategory(view);
+        ChoosePriority(view);
+        ChooseStatus(view);
 
         btSetPlanDate = view.findViewById(R.id.btSetPlanDate);
         btSetPlanDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChooseDate();
+                ChooseDate(v);
             }
         });
 
@@ -165,22 +126,28 @@ public class NoteFragment extends Fragment {
             public void onClick(View v) {
                 EditText edtNoteName = view.findViewById(R.id.edtNoteName);
                 String noteName = edtNoteName.getText().toString();
+
                 String category = spCategory.toString();
                 String priority = spPriority.toString();
                 String status = spStatus.toString();
-                TextView tvplan = view.findViewById(R.id.tvPlanDate);
-                String planDate = tvplan.getText().toString();
 
-                String ceaateDate = android.text.format.DateFormat.format("yyyy-MM-dd hh:mm:ss", new java.util.Date()).toString();
+                TextView tvPlan = view.findViewById(R.id.tvDate);
+                String planDate = tvPlan.getText().toString();
+
+                String createDate = android.text.format.DateFormat.format("yyyy-MM-dd hh:mm:ss", new java.util.Date()).toString();
 
                 if(isAddNew == true){
-                    AddNote(new Note(noteName, category,priority,status,planDate, ceaateDate));
+                    AddNote(new Note(noteName, category,priority,status,planDate, createDate));
                 }
                 else
                 {
                     Note note = listNote.get(position);
                     note.setName(noteName);
-                    note.setCreateDate(ceaateDate);
+                    note.setCategory(category);
+                    note.setPriority(priority);
+                    note.setStatus(status);
+                    note.setPlanDate(planDate);
+                    note.setCreateDate(createDate);
                     UpdateNote(note);
                 }
 
@@ -225,8 +192,58 @@ public class NoteFragment extends Fragment {
         return true;
     }
 
-    public void ChooseDate()
+    public void ChooseCategory(View view){
+        //Category
+        spCategory = (Spinner) view.findViewById(R.id.spCategory);
+        String[] initCategory = {"Select category..."};
+
+        String[] listCategoryName = CategoryDatabase.getInstance(getContext()).categoryDAO().getCategoryName();
+
+        List listCat = new ArrayList(Arrays.asList(initCategory));
+        listCat.addAll(Arrays.asList(listCategoryName));
+        Object[] objectCat = listCat.toArray();
+
+        ArrayAdapter adapterCat = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item, objectCat);
+        adapterCat.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCategory.setAdapter(adapterCat);
+    }
+
+    public void ChoosePriority(View view){
+        //Priority
+        spPriority = (Spinner) view.findViewById(R.id.spPriority);
+        String[] initPriority = {"Select priority..."};
+
+        String[] listPriorityName = PriorityDatabase.getInstance(getContext()).PriorityDAO().getPriorityName();
+
+        List listPri = new ArrayList(Arrays.asList(initPriority));
+        listPri.addAll(Arrays.asList(listPriorityName));
+        Object[] objectPri = listPri.toArray();
+
+        ArrayAdapter adapterPri = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item, objectPri);
+        adapterPri.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spPriority.setAdapter(adapterPri);
+    }
+
+    public void ChooseStatus(View view){
+        //Status
+        spStatus = (Spinner) view.findViewById(R.id.spnStatus);
+        String[] initStatus = {"Select status..."};
+
+        String[] listStatusName = StatusDatabase.getInstance(getContext()).StatusDAO().getStatusName();
+
+        List listStatus = new ArrayList(Arrays.asList(initStatus));
+        listStatus.addAll(Arrays.asList(listStatusName));
+        Object[] objectStatus = listStatus.toArray();
+
+        ArrayAdapter adapterStatus= new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item, objectStatus);
+        adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spStatus.setAdapter(adapterStatus);
+    }
+
+    public void ChooseDate(View view)
     {
+        tvPlanDate = view.findViewById(R.id.tvPlanDate);
+
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DATE);
         int month = calendar.get(Calendar.MONTH);

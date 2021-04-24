@@ -62,8 +62,8 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.ViewHolder
     public void onBindViewHolder(@NonNull StatusAdapter.ViewHolder holder, int position) {
         Status status = listStatus.get(position);
 
-        holder.name.setText(status.getName());
-        holder.createDate.setText(status.getCreateDate().toString());
+        holder.name.setText("Name: " + status.getName());
+        holder.createDate.setText("Create date: " + status.getCreateDate().toString());
     }
 
     @Override
