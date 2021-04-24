@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.notemanagement.dao.UserDao;
 import com.example.notemanagement.database.UserDatabase;
+import com.example.notemanagement.entity.User;
 import com.example.notemanagement.entity.UserEntity;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -31,9 +32,11 @@ public class SignUpActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserEntity userEntity = new UserEntity();
-                userEntity.setEmail(email.getText().toString());
-                userEntity.setPassword(password.getText().toString());
+                User userEntity = new User(email.getText().toString(),
+                        password.getText().toString(),
+                        "",
+                        "");
+
                 String repass = repassword.getText().toString();
                 String emailCheck = email.getText().toString();
 
@@ -68,9 +71,9 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private Boolean validateInput(UserEntity userEntity, String repass, String emailCheck){
-        if (userEntity.getEmail().isEmpty() ||
-                userEntity.getPassword().isEmpty() ||
+    private Boolean validateInput(User user, String repass, String emailCheck){
+        if (user.getEmail().isEmpty() ||
+                user.getPassword().isEmpty() ||
                 repass.equals("")) {
             return false;
         }

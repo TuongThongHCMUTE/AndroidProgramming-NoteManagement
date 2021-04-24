@@ -13,7 +13,7 @@ import com.example.notemanagement.entity.UserEntity;
 @Database(entities = {UserEntity.class}, version = 2)
 public abstract class UserDatabase extends RoomDatabase {
 
-    private  static final String dbName = "user";
+    private  static final String dbName = "user.db";
     private static UserDatabase userDatabase;
 
     public static synchronized UserDatabase getUserDatabase(Context context) {
