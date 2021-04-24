@@ -32,9 +32,11 @@ import com.example.notemanagement.database.NoteDatabase;
 import com.example.notemanagement.database.PriorityDatabase;
 import com.example.notemanagement.database.StatusDatabase;
 import com.example.notemanagement.entity.Note;
+import com.example.notemanagement.entity.Priority;
 import com.example.notemanagement.ui.home.HomeViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.sql.Struct;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,15 +97,11 @@ public class NoteFragment extends Fragment {
         alertDialog.setView(view);
         alertDialog.show();
 
-        ChooseCategory(view);
-        ChoosePriority(view);
-        ChooseStatus(view);
-
         btSetPlanDate = view.findViewById(R.id.btSetPlanDate);
         btSetPlanDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChooseDate(v);
+                ChooseDate(view);
             }
         });
 
@@ -118,7 +116,22 @@ public class NoteFragment extends Fragment {
         btAdd = view.findViewById(R.id.btAddNote) ;
         if(isAddNew == false)
         {
+            EditText edtNoteName = view.findViewById(R.id.edtNoteName);
+            Note note = listNote.get(position);
             btAdd.setText("Update");
+            edtNoteName.setText(note.getName());
+
+            tvPlanDate = view.findViewById(R.id.tvDate);
+            tvPlanDate.setText(note.getPlanDate());
+
+            ChooseCategory(view, note.getCategory());
+            ChoosePriority(view, note.getPriority());
+            ChooseStatus(view, note.getStatus());
+        }
+        else {
+            ChooseCategory(view, "Select category...");
+            ChoosePriority(view, "Select priority...");
+            ChooseStatus(view, "Select status...");
         }
 
         btAdd.setOnClickListener(new View.OnClickListener() {
@@ -127,9 +140,9 @@ public class NoteFragment extends Fragment {
                 EditText edtNoteName = view.findViewById(R.id.edtNoteName);
                 String noteName = edtNoteName.getText().toString();
 
-                String category = spCategory.toString();
-                String priority = spPriority.toString();
-                String status = spStatus.toString();
+                String category = spCategory.getSelectedItem().toString();
+                String priority = spPriority.getSelectedItem().toString();;
+                String status = spStatus.getSelectedItem().toString();;
 
                 TextView tvPlan = view.findViewById(R.id.tvDate);
                 String planDate = tvPlan.getText().toString();
@@ -192,10 +205,10 @@ public class NoteFragment extends Fragment {
         return true;
     }
 
-    public void ChooseCategory(View view){
+    public void ChooseCategory(View view, String category){
         //Category
         spCategory = (Spinner) view.findViewById(R.id.spCategory);
-        String[] initCategory = {"Select category..."};
+        String[] initCategory = {category};
 
         String[] listCategoryName = CategoryDatabase.getInstance(getContext()).categoryDAO().getCategoryName();
 
@@ -208,10 +221,10 @@ public class NoteFragment extends Fragment {
         spCategory.setAdapter(adapterCat);
     }
 
-    public void ChoosePriority(View view){
+    public void ChoosePriority(View view, String priority){
         //Priority
         spPriority = (Spinner) view.findViewById(R.id.spPriority);
-        String[] initPriority = {"Select priority..."};
+        String[] initPriority = {priority};
 
         String[] listPriorityName = PriorityDatabase.getInstance(getContext()).PriorityDAO().getPriorityName();
 
@@ -224,10 +237,10 @@ public class NoteFragment extends Fragment {
         spPriority.setAdapter(adapterPri);
     }
 
-    public void ChooseStatus(View view){
+    public void ChooseStatus(View view, String status){
         //Status
         spStatus = (Spinner) view.findViewById(R.id.spnStatus);
-        String[] initStatus = {"Select status..."};
+        String[] initStatus = {status};
 
         String[] listStatusName = StatusDatabase.getInstance(getContext()).StatusDAO().getStatusName();
 
@@ -242,7 +255,7 @@ public class NoteFragment extends Fragment {
 
     public void ChooseDate(View view)
     {
-        tvPlanDate = view.findViewById(R.id.tvPlanDate);
+        tvPlanDate = view.findViewById(R.id.tvDate);
 
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DATE);

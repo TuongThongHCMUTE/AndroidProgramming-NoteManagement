@@ -41,6 +41,7 @@ public class CategoryFragment extends Fragment {
     CategoryAdapter categoryAdapter;
     FloatingActionButton btnOpen;
     Button btAdd, btClose;
+    EditText edtCategoryName;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -98,7 +99,10 @@ public class CategoryFragment extends Fragment {
 
         if(isAddNew == false)
         {
+            EditText edtCategoryName = view.findViewById(R.id.edtCategoryName);
+            Category category = listCategory.get(position);
             btAdd.setText("Update");
+            edtCategoryName.setText(category.getName());
         }
 
         btAdd.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +121,7 @@ public class CategoryFragment extends Fragment {
                 else
                 {
                     Category category = listCategory.get(position);
+
                     category.setName(categoryName);
                     category.setCreateDate(date);
                     UpdateCategory(category);

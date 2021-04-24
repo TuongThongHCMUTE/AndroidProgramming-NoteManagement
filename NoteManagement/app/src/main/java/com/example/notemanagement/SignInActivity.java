@@ -24,10 +24,14 @@ public class SignInActivity extends AppCompatActivity {
     Button login, exit;
     CheckBox checkBox;
     FloatingActionButton floatingbtnSignUp;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sharedPreferences = getSharedPreferences("dataLogin", MODE_PRIVATE);
+
         setContentView(R.layout.activity_sign_in);
         email = findViewById(R.id.email_login);
         password = findViewById(R.id.password_login);
@@ -36,28 +40,7 @@ public class SignInActivity extends AppCompatActivity {
         checkBox = findViewById(R.id.checkBox);
         floatingbtnSignUp = findViewById(R.id.floatingbtnSignUp);
 
-        SharedPreferences preferences = getSharedPreferences("checkBox", MODE_PRIVATE);
-        String rememberMe = preferences.getString("checkBox", "");
-
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (buttonView.isChecked()) {
-                    SharedPreferences preferences = getSharedPreferences("checkBox", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("checkBox", "true");
-                    editor.apply();;
-                    Toast.makeText(SignInActivity.this, "Checked", Toast.LENGTH_SHORT).show();
-                }
-                else if (!buttonView.isChecked()) {
-                    SharedPreferences preferences = getSharedPreferences("checkBox", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("checkBox", "false");
-                    editor.apply();;
-                    Toast.makeText(SignInActivity.this, "Unchecked", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        rememberUser();
 
         //exit button
         exit.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +86,25 @@ public class SignInActivity extends AppCompatActivity {
                                 });
                             }
                             else {
+                                finish();
+
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putInt("userID", user.getUserID());
+                                editor.putString("userEmail", user.getEmail());
+                                editor.putString("userPass",user.getPassword());
+                                editor.putString("userFirstname", user.getFirstname());
+                                editor.putString("userLastname", user.getLastname());
+
+                                if (checkBox.isChecked()) {
+                                    editor.putString("email", emailLogin);
+                                    editor.putString("password", passLogin);
+                                    editor.putBoolean("checked", true);
+                                } else {
+                                    editor.remove("email");
+                                    editor.remove("password");
+                                    editor.remove("checked");
+                                }
+
                                 startActivity(new Intent(SignInActivity.this, MainActivity.class));
                             }
                         }
@@ -110,5 +112,11 @@ public class SignInActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void rememberUser(){
+        email.setText(sharedPreferences.getString("email",""));
+        password.setText(sharedPreferences.getString("password",""));
+        checkBox.setChecked(sharedPreferences.getBoolean("checked",false));
     }
 }

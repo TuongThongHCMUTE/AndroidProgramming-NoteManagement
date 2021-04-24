@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.example.notemanagement.R;
 import com.example.notemanagement.adapter.StatusAdapter;
 import com.example.notemanagement.database.StatusDatabase;
+import com.example.notemanagement.entity.Category;
 import com.example.notemanagement.entity.Status;
 import com.example.notemanagement.ui.home.HomeViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -96,7 +97,10 @@ public class StatusFragment extends Fragment {
 
         if(isAddNew == false)
         {
+            EditText edtStatusName = view.findViewById(R.id.edtStatusName);
+            Status status = listStatus.get(position);
             btAdd.setText("Update");
+            edtStatusName.setText(status.getName());
         }
 
         btAdd.setOnClickListener(new View.OnClickListener() {

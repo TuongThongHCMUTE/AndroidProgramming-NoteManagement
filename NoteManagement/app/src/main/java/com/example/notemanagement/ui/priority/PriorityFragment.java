@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.example.notemanagement.R;
 import com.example.notemanagement.adapter.PriorityAdapter;
 import com.example.notemanagement.database.PriorityDatabase;
+import com.example.notemanagement.entity.Category;
 import com.example.notemanagement.entity.Priority;
 import com.example.notemanagement.ui.home.HomeViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -96,7 +97,10 @@ public class PriorityFragment extends Fragment {
 
         if(isAddNew == false)
         {
+            EditText edtPriorityName = view.findViewById(R.id.edtPriorityName);
+            Priority priority = listPriority.get(position);
             btAdd.setText("Update");
+            edtPriorityName.setText(priority.getName());
         }
 
         btAdd.setOnClickListener(new View.OnClickListener() {
