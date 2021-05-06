@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.notemanagement.Common;
 import com.example.notemanagement.R;
 import com.example.notemanagement.adapter.NoteAdapter;
 import com.example.notemanagement.database.CategoryDatabase;
@@ -78,7 +79,7 @@ public class NoteFragment extends Fragment {
         recyclerView = root.findViewById(R.id.rvNote);
         recyclerView.setHasFixedSize(true);
 
-        listNote = NoteDatabase.getInstance(getContext()).NoteDAO().getListNote();
+        listNote = NoteDatabase.getInstance(getContext()).NoteDAO().getListNote(Common.userId);
         noteAdapter = new NoteAdapter(getContext(), listNote);
 
         noteAdapter.setData(listNote);
@@ -113,11 +114,12 @@ public class NoteFragment extends Fragment {
             }
         });
 
-        btAdd = view.findViewById(R.id.btAddNote) ;
+        btAdd = view.findViewById(R.id.btAddNote);
         if(isAddNew == false)
         {
             EditText edtNoteName = view.findViewById(R.id.edtNoteName);
             Note note = listNote.get(position);
+
             btAdd.setText("Update");
             edtNoteName.setText(note.getName());
 
@@ -150,7 +152,7 @@ public class NoteFragment extends Fragment {
                 String createDate = android.text.format.DateFormat.format("yyyy-MM-dd hh:mm:ss", new java.util.Date()).toString();
 
                 if(isAddNew == true){
-                    AddNote(new Note(noteName, category,priority,status,planDate, createDate));
+                    AddNote(new Note(noteName, category,priority,status,planDate, createDate, Common.userId));
                 }
                 else
                 {
@@ -185,14 +187,14 @@ public class NoteFragment extends Fragment {
     public void AddNote(Note note){
         NoteDatabase.getInstance(getContext()).NoteDAO().insertNote(note);
 
-        listNote = NoteDatabase.getInstance(getContext()).NoteDAO().getListNote();
+        listNote = NoteDatabase.getInstance(getContext()).NoteDAO().getListNote(Common.userId);
         noteAdapter.setData(listNote);
     }
 
     public void UpdateNote(Note note){
         NoteDatabase.getInstance(getContext()).NoteDAO().updateNote(note);
 
-        listNote = NoteDatabase.getInstance(getContext()).NoteDAO().getListNote();
+        listNote = NoteDatabase.getInstance(getContext()).NoteDAO().getListNote(Common.userId);
         noteAdapter.setData(listNote);
     }
 
@@ -208,7 +210,7 @@ public class NoteFragment extends Fragment {
     public void ChooseCategory(View view, String category){
         //Category
         spCategory = (Spinner) view.findViewById(R.id.spCategory);
-        String[] initCategory = {category};
+        String[] initCategory = {"Select category..."};
 
         String[] listCategoryName = CategoryDatabase.getInstance(getContext()).categoryDAO().getCategoryName();
 
@@ -218,13 +220,15 @@ public class NoteFragment extends Fragment {
 
         ArrayAdapter adapterCat = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item, objectCat);
         adapterCat.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spCategory.setAdapter(adapterCat);
+        spCategory.setSelection(adapterCat.getPosition(category));
     }
 
     public void ChoosePriority(View view, String priority){
         //Priority
         spPriority = (Spinner) view.findViewById(R.id.spPriority);
-        String[] initPriority = {priority};
+        String[] initPriority = {"Select priority..."};
 
         String[] listPriorityName = PriorityDatabase.getInstance(getContext()).PriorityDAO().getPriorityName();
 
@@ -234,13 +238,15 @@ public class NoteFragment extends Fragment {
 
         ArrayAdapter adapterPri = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item, objectPri);
         adapterPri.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spPriority.setAdapter(adapterPri);
+        spPriority.setSelection(adapterPri.getPosition(priority));
     }
 
     public void ChooseStatus(View view, String status){
         //Status
         spStatus = (Spinner) view.findViewById(R.id.spnStatus);
-        String[] initStatus = {status};
+        String[] initStatus = {"Select status..."};
 
         String[] listStatusName = StatusDatabase.getInstance(getContext()).StatusDAO().getStatusName();
 
@@ -250,7 +256,9 @@ public class NoteFragment extends Fragment {
 
         ArrayAdapter adapterStatus= new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item, objectStatus);
         adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spStatus.setAdapter(adapterStatus);
+        spStatus.setSelection(adapterStatus.getPosition(status));
     }
 
     public void ChooseDate(View view)

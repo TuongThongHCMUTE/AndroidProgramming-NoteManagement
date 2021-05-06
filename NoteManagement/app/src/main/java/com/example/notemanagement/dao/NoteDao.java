@@ -18,8 +18,8 @@ public interface NoteDao {
     @Update
     void updateNote(Note Note);
 
-    @Query("SELECT * FROM Note")
-    List<Note> getListNote();
+    @Query("SELECT * FROM Note WHERE userId = (:idUser)")
+    List<Note> getListNote(int idUser);
 
     @Delete
     void deleteNote(Note Note);

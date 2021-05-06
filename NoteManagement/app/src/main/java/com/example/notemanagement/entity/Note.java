@@ -13,6 +13,18 @@ public class Note {
     private String status;
     private String planDate;
     private String createDate;
+    private int userId;
+
+    public Note(String name, String category, String priority, String status, String planDate, String createDate, int userId) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.priority = priority;
+        this.status = status;
+        this.planDate = planDate;
+        this.createDate = createDate;
+        this.userId = userId;
+    }
 
     public int getId() {
         return id;
@@ -70,13 +82,7 @@ public class Note {
         this.createDate = createDate;
     }
 
-    public Note(String name, String category, String priority, String status, String planDate, String createDate) {
-        this.id = id;
-        this.name = name;
-        this.category = category;
-        this.priority = priority;
-        this.status = status;
-        this.planDate = planDate;
-        this.createDate = createDate;
-    }
+    public int getUserId() { return userId; }
+
+    public void setUserId(int userId) { this.userId = userId; }
 }

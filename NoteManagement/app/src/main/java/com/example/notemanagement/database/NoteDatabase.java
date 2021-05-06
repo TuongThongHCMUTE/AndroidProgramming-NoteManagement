@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import com.example.notemanagement.dao.NoteDao;
 import com.example.notemanagement.entity.Note;
 
-@Database(entities = {Note.class}, version = 2)
+@Database(entities = {Note.class}, version = 1)
 public abstract class NoteDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "note.db";
     private static NoteDatabase instance;
