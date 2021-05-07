@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment {
 
         pieChart = root.findViewById(R.id.piechart);
         pieChart.setUsePercentValues(true);
-        pieChart.setDragDecelerationFrictionCoef(0.99f);
+        //pieChart.setDragDecelerationFrictionCoef(0.99f);
         pieChart.setDrawHoleEnabled(false);
 
         setPieChartValue();
@@ -62,7 +62,9 @@ public class HomeFragment extends Fragment {
             checkStatusName = checkStatusName(temp);
             setColorPieChart(countColorID++, checkStatusName);
             count = NoteDatabase.getInstance(getContext()).NoteDAO().countNotesOfUserByStatusID(Common.userId, temp);
-            entries.add(new PieEntry(count, temp));
+            if(count > 0){
+                entries.add(new PieEntry(count, temp));
+            }
         }
 
 
@@ -73,7 +75,7 @@ public class HomeFragment extends Fragment {
         dataset.setColors(color);
 
         PieData data= new PieData((dataset));
-        data.setValueTextSize(10f);
+        data.setValueTextSize(14f);
         data.setValueTextColor(Color.WHITE);
 
         pieChart.setData(data);
