@@ -4,50 +4,54 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.anychart.AnyChart;
-import com.anychart.AnyChartView;
-import com.anychart.chart.common.dataentry.DataEntry;
-import com.anychart.chart.common.dataentry.ValueDataEntry;
-import com.anychart.charts.Pie;
+import com.example.notemanagement.Common;
 import com.example.notemanagement.R;
 import com.example.notemanagement.database.NoteDatabase;
 import com.example.notemanagement.database.StatusDatabase;
 import com.example.notemanagement.entity.Note;
+import com.example.notemanagement.entity.Status;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
-    String [] statuses;
+
+    private PieChart pieChart;
+    private List<Note> notes;
+    private List<Status> statuses;
+    int[] color;
+    private final int wrong = 0, pending = 1, processing = 2, done = 3;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        statuses = StatusDatabase.getInstance(getContext()).StatusDAO().getStatusName();
+        pieChart = root.findViewById(R.id.piechart);
+        pieChart.setUsePercentValues(true);
+        pieChart.setDragDecelerationFrictionCoef(0.99f);
+        pieChart.setDrawHoleEnabled(false);
 
-        List<DataEntry> dataEntries = new ArrayList<>();
-        DataEntry entry;
-        for (int i = 0; i < statuses.length; i++){
-            entry = new ValueDataEntry(statuses[i],
-                    NoteDatabase.getInstance(getContext()).NoteDAO().countQuantityByStatus(statuses[i]));
-            dataEntries.add(entry);
-        }
-
-        AnyChartView pieChart = root.findViewById(R.id.pie_chart);
-        Pie pie = AnyChart.pie();
-        pie.data(dataEntries);
-        pieChart.setChart(pie);
+        setPieChartValue();
 
         return root;
+    }
+
+    public void setPieChartValue(){
+        notes = NoteDatabase.getInstance(getContext()).NoteDAO().getListNote(Common.userId);
+        statuses = StatusDatabase.getInstance(getContext()).StatusDAO().getListStatus();
+
+        ArrayList<PieEntry> entries = new ArrayList<>();
+        String temp;
+        int count, checkStatusName, countColorID;
+
+        color = new  int[statuses.size()];
+        countColorID = 0;
     }
 }

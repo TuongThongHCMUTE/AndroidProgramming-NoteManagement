@@ -95,7 +95,7 @@ public class ChangePasswordFragment extends Fragment {
         }
 
         // New Password is not equal Re New Password
-        if(!newPassword.equals(newPassword)){
+        if(!(newPassword.equals(reNewPassword))){
             return 0;
         }
 
