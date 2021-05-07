@@ -59,9 +59,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
-        TextView email_address = (TextView) findViewById(R.id.email_address);
-        email_address.setText(SignInActivity.emailLogin);
-
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
 

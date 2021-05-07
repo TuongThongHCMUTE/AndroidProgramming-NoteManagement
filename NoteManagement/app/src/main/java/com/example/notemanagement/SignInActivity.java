@@ -18,8 +18,7 @@ import com.example.notemanagement.entity.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
-
-    public static String emailLogin, passLogin;
+    public String emailLogin, passLogin;
     EditText email, password;
     Button login, exit;
     CheckBox checkBox;
@@ -87,7 +86,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             Toast.makeText(SignInActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
         }
         else {
-            UserDatabase userDatabase = UserDatabase.getUserDatabase(getApplicationContext());
+            UserDatabase userDatabase = UserDatabase.getInstance(getApplicationContext());
             UserDao userDao = userDatabase.userDao();
 
             new Thread(new Runnable() {

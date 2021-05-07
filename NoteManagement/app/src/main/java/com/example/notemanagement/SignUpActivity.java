@@ -40,7 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
                 String emailCheck = email.getText().toString();
 
                 if (validateInput(userEntity,repass,emailCheck)) {
-                    UserDatabase userDatabase = UserDatabase.getUserDatabase(getApplicationContext());
+                    UserDatabase userDatabase = UserDatabase.getInstance(getApplicationContext());
                     UserDao userDao = userDatabase.userDao();
                     new Thread(new Runnable() {
                         @Override
@@ -76,7 +76,7 @@ public class SignUpActivity extends AppCompatActivity {
                 repass.equals("")) {
             return false;
         }
-        UserDatabase userDatabase1 = UserDatabase.getUserDatabase(getApplicationContext());
+        UserDatabase userDatabase1 = UserDatabase.getInstance(getApplicationContext());
         UserDao userDao1 = userDatabase1.userDao();
 
         new Thread(new Runnable() {

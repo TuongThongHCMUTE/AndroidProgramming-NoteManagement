@@ -14,16 +14,16 @@ import com.example.notemanagement.entity.User;
 public abstract class UserDatabase extends RoomDatabase {
 
     private  static final String dbName = "user.db";
-    private static UserDatabase userDatabase;
+    private static UserDatabase instance;
 
-    public static synchronized UserDatabase getUserDatabase(Context context) {
+    public static synchronized UserDatabase getInstance(Context context) {
 
-        if (userDatabase == null) {
-            userDatabase = Room.databaseBuilder(context, UserDatabase.class, dbName)
-                    .fallbackToDestructiveMigration()
+        if (instance == null) {
+            instance = Room.databaseBuilder(context, UserDatabase.class, dbName)
+                    .allowMainThreadQueries()
                     .build();
         }
-        return userDatabase;
+        return instance;
     }
 
     public abstract UserDao userDao();

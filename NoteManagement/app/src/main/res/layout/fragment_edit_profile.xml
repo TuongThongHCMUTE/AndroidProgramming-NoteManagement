@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edtFirstname" />
 
     <EditText
-        android:id="@+id/edtEmailProfile"
+        android:id="@+id/edtEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -65,7 +65,7 @@
         android:text="@string/change"
         android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtEmailProfile" />
+        app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
 
     <Button
         android:id="@+id/btnHomeProfile"
@@ -76,5 +76,5 @@
         android:text="@string/menu_home"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtEmailProfile" />
+        app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
 </androidx.constraintlayout.widget.ConstraintLayout>

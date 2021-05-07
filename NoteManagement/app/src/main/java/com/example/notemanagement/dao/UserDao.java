@@ -4,6 +4,7 @@ package com.example.notemanagement.dao;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.notemanagement.entity.User;
 
@@ -21,12 +22,15 @@ public interface UserDao {
     @Query("SELECT * FROM user WHERE email = (:emailCheck)")
     User checkExistence(String emailCheck);
 
-    @Query("UPDATE user SET firstname = :firstname, lastname=:lastname, email=:email where userID = :uID")
-    public void updateProfile(String firstname, String lastname, String email, int uID);
+    @Update
+    void  updateUser(User user);
 
-    @Query("SELECT * FROM user WHERE email = :email")
-    public User getUserByEmail(String email);
+    @Query("UPDATE user SET firstname = :firstname, lastname=:lastname, email=:email where userID = :uid")
+    public void updateProfile(String firstname, String lastname, String email, int uid);
 
-    @Query("UPDATE user SET password = :password WHERE userID = :uID")
-    public void changePassword(String password, int uID);
+    @Query("SELECT * FROM user WHERE userID = :uid")
+    public User getUserByID(int uid);
+
+    @Query("UPDATE user SET password = :password WHERE userID = :uid")
+    public void changePassword(String password, int uid);
 }
