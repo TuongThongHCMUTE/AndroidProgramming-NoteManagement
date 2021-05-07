@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment {
 
     public void setPieChartValue(){
         notes = NoteDatabase.getInstance(getContext()).NoteDAO().getListNote(Common.userId);
-        statuses = StatusDatabase.getInstance(getContext()).StatusDAO().getListStatus();
+        statuses = StatusDatabase.getInstance(getContext()).StatusDAO().getListStatus(Common.userId);
 
         ArrayList<PieEntry> entries = new ArrayList<>();
         String temp;
