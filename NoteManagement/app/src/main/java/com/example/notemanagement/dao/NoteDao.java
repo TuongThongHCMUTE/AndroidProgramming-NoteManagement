@@ -27,4 +27,13 @@ public interface NoteDao {
 
     @Delete
     void deleteNote(Note Note);
+
+    @Query("UPDATE Note SET category = :newCat WHERE category = :oldCat AND userId = :uID")
+    void changeCategoryName(String newCat, String oldCat, int uID);
+
+    @Query("UPDATE Note SET priority = :newPri WHERE priority = :oldPri AND userId = :uID")
+    void changePriorityName(String newPri, String oldPri, int uID);
+
+    @Query("UPDATE Note SET status = :newSta WHERE status = :oldSta AND userId = :uID")
+    void changeStatusName(String newSta, String oldSta, int uID);
 }

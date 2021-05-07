@@ -18,14 +18,14 @@ public interface PriorityDao {
     @Update
     void updatePriority(Priority priority);
 
-    @Query("SELECT * FROM Priority")
-    List<Priority> getListPriority();
+    @Query("SELECT * FROM Priority WHERE userId = :uID")
+    List<Priority> getListPriority(int uID);
 
     @Delete
     void deletePriority(Priority priority);
 
-    @Query("Select name From Priority")
-    String[] getPriorityName();
+    @Query("Select name From Priority WHERE userId = :uID")
+    String[] getPriorityName(int uID);
 
     @Query("Select id From Priority")
     int[] getPriorityId();

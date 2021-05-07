@@ -20,8 +20,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.notemanagement.Common;
 import com.example.notemanagement.R;
 import com.example.notemanagement.adapter.PriorityAdapter;
+import com.example.notemanagement.database.CategoryDatabase;
+import com.example.notemanagement.database.NoteDatabase;
 import com.example.notemanagement.database.PriorityDatabase;
 import com.example.notemanagement.entity.Category;
 import com.example.notemanagement.entity.Priority;
@@ -65,7 +68,7 @@ public class PriorityFragment extends Fragment {
         recyclerView = root.findViewById(R.id.rvPriority);
         recyclerView.setHasFixedSize(true);
 
-        listPriority = PriorityDatabase.getInstance(getContext()).PriorityDAO().getListPriority();
+        listPriority = PriorityDatabase.getInstance(getContext()).PriorityDAO().getListPriority(Common.userId);
         priorityAdapter = new PriorityAdapter(getContext(), listPriority);
 
         priorityAdapter.setData(listPriority);
@@ -111,15 +114,30 @@ public class PriorityFragment extends Fragment {
 
                 String date = android.text.format.DateFormat.format("yyyy-MM-dd hh:mm:ss", new java.util.Date()).toString();
 
+                String error = "";
+
                 if(isAddNew == true){
-                    AddPriority(new Priority(priorityName, date));
+                    error = validatePriority(priorityName, "");
+                    if(error.isEmpty()){
+                        AddPriority(new Priority(priorityName, date, Common.userId));
+                    } else {
+                        edtPriorityName.setError(error);
+                        return;
+                    }
                 }
                 else
                 {
                     Priority priority = listPriority.get(position);
-                    priority.setName(priorityName);
-                    priority.setCreateDate(date);
-                    UpdatePriority(priority);
+
+                    error = validatePriority(priorityName, priority.getName());
+                    if(error.isEmpty()){
+                        NoteDatabase.getInstance(getContext()).NoteDAO().changePriorityName(priorityName, priority.getName(), Common.userId);
+                        priority.setName(priorityName);
+                        UpdatePriority(priority);
+                    } else {
+                        edtPriorityName.setError(error);
+                        return;
+                    }
                 }
 
                 alertDialog.cancel();
@@ -127,6 +145,30 @@ public class PriorityFragment extends Fragment {
         });
     }
 
+    public String validatePriority(String name, String oldName){
+        String[] listNames = PriorityDatabase.getInstance(getContext()).PriorityDAO().getPriorityName(Common.userId);
+
+        if(!name.equals("High") && !name.equals("Medium") && !name.equals("Slow")){
+            return "Priority must be High, Medium or Slow";
+        }
+
+        if (oldName.isEmpty()){
+            for (int i=0;i<listNames.length;i++){
+                if (listNames[i].equals(name)){
+                    return "Priority is duplicated";
+                }
+            }
+        }
+
+        if (!name.equals(oldName)) {
+            for (int i=0;i<listNames.length;i++){
+                if (listNames[i].equals(name)){
+                    return "Priority is duplicated";
+                }
+            }
+        }
+        return "";
+    }
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         int position = item.getGroupId();
@@ -143,14 +185,14 @@ public class PriorityFragment extends Fragment {
     public void AddPriority(Priority Priority){
         PriorityDatabase.getInstance(getContext()).PriorityDAO().insertPriority(Priority);
 
-        listPriority = PriorityDatabase.getInstance(getContext()).PriorityDAO().getListPriority();
+        listPriority = PriorityDatabase.getInstance(getContext()).PriorityDAO().getListPriority(Common.userId);
         priorityAdapter.setData(listPriority);
     }
 
     public void UpdatePriority(Priority Priority){
         PriorityDatabase.getInstance(getContext()).PriorityDAO().updatePriority(Priority);
 
-        listPriority = PriorityDatabase.getInstance(getContext()).PriorityDAO().getListPriority();
+        listPriority = PriorityDatabase.getInstance(getContext()).PriorityDAO().getListPriority(Common.userId);
         priorityAdapter.setData(listPriority);
     }
 

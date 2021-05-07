@@ -212,7 +212,7 @@ public class NoteFragment extends Fragment {
         spCategory = (Spinner) view.findViewById(R.id.spCategory);
         String[] initCategory = {"Select category..."};
 
-        String[] listCategoryName = CategoryDatabase.getInstance(getContext()).categoryDAO().getCategoryName();
+        String[] listCategoryName = CategoryDatabase.getInstance(getContext()).categoryDAO().getCategoryName(Common.userId);
 
         List listCat = new ArrayList(Arrays.asList(initCategory));
         listCat.addAll(Arrays.asList(listCategoryName));
@@ -230,7 +230,7 @@ public class NoteFragment extends Fragment {
         spPriority = (Spinner) view.findViewById(R.id.spPriority);
         String[] initPriority = {"Select priority..."};
 
-        String[] listPriorityName = PriorityDatabase.getInstance(getContext()).PriorityDAO().getPriorityName();
+        String[] listPriorityName = PriorityDatabase.getInstance(getContext()).PriorityDAO().getPriorityName(Common.userId);
 
         List listPri = new ArrayList(Arrays.asList(initPriority));
         listPri.addAll(Arrays.asList(listPriorityName));
@@ -248,7 +248,7 @@ public class NoteFragment extends Fragment {
         spStatus = (Spinner) view.findViewById(R.id.spnStatus);
         String[] initStatus = {"Select status..."};
 
-        String[] listStatusName = StatusDatabase.getInstance(getContext()).StatusDAO().getStatusName();
+        String[] listStatusName = StatusDatabase.getInstance(getContext()).StatusDAO().getStatusName(Common.userId);
 
         List listStatus = new ArrayList(Arrays.asList(initStatus));
         listStatus.addAll(Arrays.asList(listStatusName));
