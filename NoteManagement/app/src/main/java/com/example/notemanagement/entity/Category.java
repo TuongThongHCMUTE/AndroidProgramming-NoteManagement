@@ -11,10 +11,12 @@ public class Category {
     private int id;
     private String name;
     private String createDate;
+    private int userId;
 
-    public Category(String name, String createDate) {
+    public Category(String name, String createDate, int userId) {
         this.name = name;
         this.createDate = createDate;
+        this.userId = userId;
     }
 
     public int getId() {
@@ -39,5 +41,13 @@ public class Category {
 
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

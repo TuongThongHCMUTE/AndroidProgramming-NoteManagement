@@ -18,14 +18,14 @@ public interface CategoryDao {
     @Update
     void updateCategory(Category category);
 
-    @Query("SELECT * FROM Category")
-    List<Category> getListCategory();
+    @Query("SELECT * FROM Category WHERE userId = :uID")
+    List<Category> getListCategory(int uID);
 
     @Delete
     void deleteCategory(Category category);
 
-    @Query("Select name From Category")
-    String[] getCategoryName();
+    @Query("Select name From Category WHERE userId = :uID")
+    String[] getCategoryName(int uID);
 
     @Query("Select id From Category")
     int[] getCategoryId();

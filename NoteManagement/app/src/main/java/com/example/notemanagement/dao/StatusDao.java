@@ -18,14 +18,14 @@ public interface StatusDao {
     @Update
     void updateStatus(Status status);
 
-    @Query("SELECT * FROM Status")
-    List<Status> getListStatus();
+    @Query("SELECT * FROM Status WHERE userId = :uID")
+    List<Status> getListStatus(int uID);
 
     @Delete
     void deleteStatus(Status status);
 
-    @Query("Select name From Status")
-    String[] getStatusName();
+    @Query("Select name From Status WHERE userId = :uID")
+    String[] getStatusName(int uID);
 
     @Query("Select id From Status")
     int[] getStatusId();

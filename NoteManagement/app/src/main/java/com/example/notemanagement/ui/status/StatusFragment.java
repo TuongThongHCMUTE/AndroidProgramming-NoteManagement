@@ -20,8 +20,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.notemanagement.Common;
 import com.example.notemanagement.R;
 import com.example.notemanagement.adapter.StatusAdapter;
+import com.example.notemanagement.database.CategoryDatabase;
+import com.example.notemanagement.database.NoteDatabase;
 import com.example.notemanagement.database.StatusDatabase;
 import com.example.notemanagement.entity.Category;
 import com.example.notemanagement.entity.Status;
@@ -65,7 +68,7 @@ public class StatusFragment extends Fragment {
         recyclerView = root.findViewById(R.id.rvStatus);
         recyclerView.setHasFixedSize(true);
 
-        listStatus = StatusDatabase.getInstance(getContext()).StatusDAO().getListStatus();
+        listStatus = StatusDatabase.getInstance(getContext()).StatusDAO().getListStatus(Common.userId);
         statusAdapter = new StatusAdapter(getContext(), listStatus);
 
         statusAdapter.setData(listStatus);
@@ -111,20 +114,60 @@ public class StatusFragment extends Fragment {
 
                 String date = android.text.format.DateFormat.format("yyyy-MM-dd hh:mm:ss", new java.util.Date()).toString();
 
+                String error = "";
+
                 if(isAddNew == true){
-                    AddStatus(new Status(statusName, date));
+                    error = validateStatus(statusName, "");
+                    if(error.isEmpty()){
+                        AddStatus(new Status(statusName, date, Common.userId));
+                    } else {
+                        edtStatusName.setError(error);
+                        return;
+                    }
                 }
                 else
                 {
                     Status status = listStatus.get(position);
-                    status.setName(statusName);
-                    status.setCreateDate(date);
-                    UpdateStatus(status);
+                    error = validateStatus(statusName, status.getName());
+                    if(error.isEmpty()){
+                        NoteDatabase.getInstance(getContext()).NoteDAO().changeStatusName(statusName, status.getName(), Common.userId);
+                        status.setName(statusName);
+                        UpdateStatus(status);
+                    } else {
+                        edtStatusName.setError(error);
+                        return;
+                    }
+
                 }
 
                 alertDialog.cancel();
             }
         });
+    }
+
+    public String validateStatus(String name, String oldName){
+        String[] listNames = StatusDatabase.getInstance(getContext()).StatusDAO().getStatusName(Common.userId);
+
+        if(!name.equals("Done") && !name.equals("Processing") && !name.equals("Pending")){
+            return "Status must be Done, Processing or Pending";
+        }
+
+        if (oldName.isEmpty()){
+            for (int i=0;i<listNames.length;i++){
+                if (listNames[i].equals(name)){
+                    return "Status is duplicated";
+                }
+            }
+        }
+
+        if (!name.equals(oldName)) {
+            for (int i=0;i<listNames.length;i++){
+                if (listNames[i].equals(name)){
+                    return "Status is duplicated";
+                }
+            }
+        }
+        return "";
     }
 
     @Override
@@ -143,14 +186,14 @@ public class StatusFragment extends Fragment {
     public void AddStatus(Status status){
         StatusDatabase.getInstance(getContext()).StatusDAO().insertStatus(status);
 
-        listStatus = StatusDatabase.getInstance(getContext()).StatusDAO().getListStatus();
+        listStatus = StatusDatabase.getInstance(getContext()).StatusDAO().getListStatus(Common.userId);
         statusAdapter.setData(listStatus);
     }
 
     public void UpdateStatus(Status status){
         StatusDatabase.getInstance(getContext()).StatusDAO().updateStatus(status);
 
-        listStatus = StatusDatabase.getInstance(getContext()).StatusDAO().getListStatus();
+        listStatus = StatusDatabase.getInstance(getContext()).StatusDAO().getListStatus(Common.userId);
         statusAdapter.setData(listStatus);
     }
 

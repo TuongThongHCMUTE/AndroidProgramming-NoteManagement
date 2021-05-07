@@ -23,10 +23,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.notemanagement.Common;
 import com.example.notemanagement.R;
 import com.example.notemanagement.adapter.CategoryAdapter;
 import com.example.notemanagement.database.CategoryDatabase;
+import com.example.notemanagement.database.NoteDatabase;
 import com.example.notemanagement.entity.Category;
+import com.example.notemanagement.entity.Note;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -67,7 +70,7 @@ public class CategoryFragment extends Fragment {
         recyclerView = root.findViewById(R.id.rvCategory);
         recyclerView.setHasFixedSize(true);
 
-        listCategory = CategoryDatabase.getInstance(getContext()).categoryDAO().getListCategory();
+        listCategory = CategoryDatabase.getInstance(getContext()).categoryDAO().getListCategory(Common.userId);
         categoryAdapter = new CategoryAdapter(getContext(), listCategory);
 
         categoryAdapter.setData(listCategory);
@@ -113,23 +116,59 @@ public class CategoryFragment extends Fragment {
 
                 String date = android.text.format.DateFormat.format("yyyy-MM-dd hh:mm:ss", new java.util.Date()).toString();
 
-
+                String error = "";
 
                 if(isAddNew == true){
-                    AddCategory(new Category(categoryName, date));
+                    error = validateCategory(categoryName, "");
+                    if(error.isEmpty()){
+                        AddCategory(new Category(categoryName, date, Common.userId));
+                    } else {
+                        edtCategoryName.setError(error);
+                        return;
+                    }
                 }
                 else
                 {
                     Category category = listCategory.get(position);
 
-                    category.setName(categoryName);
-                    category.setCreateDate(date);
-                    UpdateCategory(category);
+                    error = validateCategory(categoryName, category.getName());
+                    if(error.isEmpty()){
+                        NoteDatabase.getInstance(getContext()).NoteDAO().changeCategoryName(categoryName, category.getName(), Common.userId);
+                        category.setName(categoryName);
+                        UpdateCategory(category);
+                    } else {
+                        edtCategoryName.setError(error);
+                        return;
+                    }
                 }
 
                 alertDialog.cancel();
             }
         });
+    }
+    public String validateCategory(String name, String oldName){
+        String[] listNames = CategoryDatabase.getInstance(getContext()).categoryDAO().getCategoryName(Common.userId);
+
+        if(!name.equals("Working") && !name.equals("Relax") && !name.equals("Study")){
+            return "Name must be Working, Relax or Study";
+        }
+
+        if (oldName.isEmpty()){
+            for (int i=0;i<listNames.length;i++){
+                if (listNames[i].equals(name)){
+                    return "Category is duplicated";
+                }
+            }
+        }
+
+        if (!name.equals(oldName)) {
+            for (int i=0;i<listNames.length;i++){
+                if (listNames[i].equals(name)){
+                    return "Category is duplicated";
+                }
+            }
+        }
+        return "";
     }
 
     @Override
@@ -148,14 +187,14 @@ public class CategoryFragment extends Fragment {
     public void AddCategory(Category category){
         CategoryDatabase.getInstance(getContext()).categoryDAO().insertCategory(category);
 
-        listCategory = CategoryDatabase.getInstance(getContext()).categoryDAO().getListCategory();
+        listCategory = CategoryDatabase.getInstance(getContext()).categoryDAO().getListCategory(Common.userId);
         categoryAdapter.setData(listCategory);
     }
 
     public void UpdateCategory(Category category){
         CategoryDatabase.getInstance(getContext()).categoryDAO().updateCategory(category);
 
-        listCategory = CategoryDatabase.getInstance(getContext()).categoryDAO().getListCategory();
+        listCategory = CategoryDatabase.getInstance(getContext()).categoryDAO().getListCategory(Common.userId);
         categoryAdapter.setData(listCategory);
     }
 
