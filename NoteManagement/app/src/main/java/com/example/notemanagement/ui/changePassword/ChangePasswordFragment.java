@@ -53,6 +53,7 @@ public class ChangePasswordFragment extends Fragment {
                 Log.e("renew", reNewPassword);
 
                 int result = validateInput(Common.userId, currentPassword, newPassword, reNewPassword);
+                Log.e("result", ""+ result);
                 processChangePassword(result, Common.userId, currentPassword);
             }
         });
@@ -90,7 +91,7 @@ public class ChangePasswordFragment extends Fragment {
 
         // Current Password is Wrong
         User user = UserDatabase.getInstance(getContext()).userDao().getUserByID(uid);
-        if(user.getPassword() == currentPassword){
+        if(!(currentPassword.equals(user.getPassword()))){
             return -1;
         }
 
@@ -107,24 +108,23 @@ public class ChangePasswordFragment extends Fragment {
         switch (result){
             // One of input fields is empty
             case -2:
-                Toast.makeText(this.getContext(), "Please complete all information!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this.getActivity(), "Please complete all information!", Toast.LENGTH_SHORT).show();
+                Log.e("err","err");
                 break;
             // Current Password is Wrong
             case -1:
-                Toast.makeText(this.getContext(), "Current Password is Wrong!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this.getActivity(), "Current Password is Wrong!", Toast.LENGTH_SHORT).show();
                 break;
             // New Password is not equal Re New Password
             case 0:
-                Toast.makeText(this.getContext(), "Check Your ReNew Password again!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this.getActivity(), "Check Your ReNew Password again!", Toast.LENGTH_SHORT).show();
                 break;
             case 1:
                 if(changePassword(uid, currentPassword)){
-                    Toast.makeText(this.getContext(), "Change Password Successfully!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this.getActivity(), "Change Password Successfully!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this.getContext(), "Change Password Fail!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this.getActivity(), "Change Password Fail!", Toast.LENGTH_SHORT).show();
                 }
-                break;
-            default:
                 break;
         }
     }
