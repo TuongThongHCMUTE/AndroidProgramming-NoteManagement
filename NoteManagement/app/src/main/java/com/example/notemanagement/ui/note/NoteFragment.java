@@ -54,7 +54,6 @@ public class NoteFragment extends Fragment {
     TextView tvPlanDate;
     Spinner spCategory, spPriority, spStatus;
 
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 

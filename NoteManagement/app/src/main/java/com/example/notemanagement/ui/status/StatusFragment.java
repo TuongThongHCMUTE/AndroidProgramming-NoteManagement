@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.notemanagement.Common;
 import com.example.notemanagement.R;
@@ -200,6 +201,13 @@ public class StatusFragment extends Fragment {
     public boolean DeleteStatus(int position)
     {
         Status status = listStatus.get(position);
+
+        int countStatus = NoteDatabase.getInstance(getContext()).NoteDAO().countNotesOfUserByStatusID(Common.userId, status.getName());
+        if (countStatus > 0){
+            Toast.makeText(this.getContext(), "Status has been used by Note", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         StatusDatabase.getInstance(getContext()).StatusDAO().deleteStatus(status);
         listStatus.remove(position);
         statusAdapter.notifyItemRemoved(position);

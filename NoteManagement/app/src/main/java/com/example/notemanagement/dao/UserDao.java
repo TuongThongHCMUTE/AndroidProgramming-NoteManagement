@@ -25,12 +25,6 @@ public interface UserDao {
     @Update
     void  updateUser(User user);
 
-    @Query("UPDATE user SET firstname = :firstname, lastname=:lastname, email=:email where userID = :uid")
-    public void updateProfile(String firstname, String lastname, String email, int uid);
-
     @Query("SELECT * FROM user WHERE userID = :uid")
     public User getUserByID(int uid);
-
-    @Query("UPDATE user SET password = :password WHERE userID = :uid")
-    public void changePassword(String password, int uid);
 }

@@ -201,6 +201,13 @@ public class CategoryFragment extends Fragment {
     public boolean DeleteCategory(int position)
     {
         Category category = listCategory.get(position);
+
+        int countStatus = NoteDatabase.getInstance(getContext()).NoteDAO().countNotesOfUserByCategoryID(Common.userId, category.getName());
+        if (countStatus > 0){
+            Toast.makeText(this.getContext(), "Category has been used by Note", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         CategoryDatabase.getInstance(getContext()).categoryDAO().deleteCategory(category);
         listCategory.remove(position);
         categoryAdapter.notifyItemRemoved(position);

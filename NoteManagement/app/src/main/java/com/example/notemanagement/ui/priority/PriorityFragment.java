@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.notemanagement.Common;
 import com.example.notemanagement.R;
@@ -199,6 +200,13 @@ public class PriorityFragment extends Fragment {
     public boolean DeletePriority(int position)
     {
         Priority priority = listPriority.get(position);
+
+        int countStatus = NoteDatabase.getInstance(getContext()).NoteDAO().countNotesOfUserByPriorityID(Common.userId, priority.getName());
+        if (countStatus > 0){
+            Toast.makeText(this.getContext(), "Priority has been used by Note", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         PriorityDatabase.getInstance(getContext()).PriorityDAO().deletePriority(priority);
         listPriority.remove(position);
         priorityAdapter.notifyItemRemoved(position);

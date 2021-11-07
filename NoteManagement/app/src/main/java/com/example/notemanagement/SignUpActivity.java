@@ -55,10 +55,6 @@ public class SignUpActivity extends AppCompatActivity {
                         }
                     }).start();
                 }
-                else {
-                    Toast.makeText(SignUpActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
-                }
-
             }
         });
 
@@ -74,20 +70,16 @@ public class SignUpActivity extends AppCompatActivity {
         if (user.getEmail().isEmpty() ||
                 user.getPassword().isEmpty() ||
                 repass.equals("")) {
+            Toast.makeText(SignUpActivity.this, "Please complete all information!", Toast.LENGTH_SHORT).show();
             return false;
         }
-        UserDatabase userDatabase1 = UserDatabase.getInstance(getApplicationContext());
-        UserDao userDao1 = userDatabase1.userDao();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                User userEntity = userDao1.checkExistence(emailCheck);
-                if (userEntity != null) {
-                    return ;
-                }
-            }
-        }).start();
+        User userFromDB = UserDatabase.getInstance(this).userDao().checkExistence(user.getEmail());
+        if(userFromDB != null){
+            Toast.makeText(SignUpActivity.this, "Email already existed!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         return true;
     }
 }
